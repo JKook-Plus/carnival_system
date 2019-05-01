@@ -1,7 +1,7 @@
 import tkinter as tk
 import ctypes
 import sqlite3
-
+import datetime
 
 user32 = ctypes.windll.user32
 
@@ -28,7 +28,9 @@ class Application(tk.Frame):
 
 
 
+
     def create_widgets(self):
+
 
         year = tk.StringVar(root)
         year.set(age_years[0])
@@ -43,9 +45,15 @@ class Application(tk.Frame):
         popupMenu.configure(bg=background_2, bd = 3, fg = "white", highlightthickness = 0)
         popupMenu.grid(row = 3, column = 0, sticky="w")
 
+        time = tk.StringVar(root)
+        entry_box = tk.Entry(root)
+        entry_box.bind('<Return>', lambda event: self.start(year.get(),gender.get(), entry_box.get()))
+        entry_box.configure(bg=background_2, fg = "white")
+        entry_box.grid()
 
 
-        tk.Button(text="Start Recording", command=lambda: self.start(year.get(),gender.get()), bg=background_2, bd = 3,fg = "white").grid(row=5,column=5)
+
+        tk.Button(text="Record Time", command=lambda: self.start(year.get(),gender.get(), entry_box.get()), bg=background_2, bd = 3,fg = "white").grid(row=5,column=5)
 
 
 
@@ -54,9 +62,11 @@ class Application(tk.Frame):
         quit.grid(row=4, column=1)
 
 
-    def start(self, year, gender):
+    def start(self, year, gender, time):
+        print(time)
+
         with open("output.csv", "a+") as f:
-            text = (year + ", " + gender + "\n")
+            text = (year + ", " + gender + ", " + time + ", " + str(datetime.datetime.now()) +"\n")
             f.write(text)
             f.close()
 
