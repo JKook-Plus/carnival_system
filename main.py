@@ -6,44 +6,62 @@ import sqlite3
 user32 = ctypes.windll.user32
 
 
+age_years = ["5 (2008)","6 (2007)","7 (2006)","8 (2005)","9 (2004)","10 (2003)"]
+genders = ["M", "F"]
 
-age_years = ["5","6","7","8","9","10"]
-
+background = ("#18191c")
+background_2 = ("#36393f")
 
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
         self.grid()
+
+
+
         self.create_widgets()
         root.geometry("%sx%s" %(user32.GetSystemMetrics(0)-150, user32.GetSystemMetrics(1)-150))
-        root.configure(bg="#21252b")
-        self.configure(bg="#21252b")
-        #Grid.rowconfigure(root, 0, weight=1)
-        #Grid.columnconfigure(root, 0, weight=1)
+        root.configure(bg=background)
+        self.configure(bg=background)
+
+
 
 
     def create_widgets(self):
-        year_buttons = []
 
-        for i in age_years:
-            b = tk.Button(self)
-            b["text"] = (i)
-            b["command"] = (lambda i=i: self.years(i))
-            year_buttons.append(b)
+        year = tk.StringVar(root)
+        year.set(age_years[0])
+        popupMenu = tk.OptionMenu(root, year, *age_years)
+        popupMenu.configure(bg=background_2, bd = 3, fg = "white", highlightthickness = 0)
+        popupMenu.grid(row = 2, column = 0, sticky="w")
 
 
-        num = ((user32.GetSystemMetrics(0)-150)/len(year_buttons))
-        for i in range(len(year_buttons)):
+        gender = tk.StringVar(root)
+        gender.set(genders[0])
+        popupMenu = tk.OptionMenu(root, gender, *genders)
+        popupMenu.configure(bg=background_2, bd = 3, fg = "white", highlightthickness = 0)
+        popupMenu.grid(row = 3, column = 0, sticky="w")
 
-            year_buttons[i].grid(row = 1, column = i+2,  sticky="N"+"S"+"E"+"W")
 
-        self.quit = tk.Button(self, text="QUIT", fg="red",
-                              command=self.master.destroy)
-        self.quit.grid(row=10, column=10)
 
-    def years(self, *args, **kwargs):
-        print(*args)
+        tk.Button(text="Start Recording", command=lambda: self.start(year.get(),gender.get()), bg=background_2, bd = 3,fg = "white").grid(row=5,column=5)
+
+
+
+        quit = tk.Button(self, text="QUIT", fg="red", command=self.master.destroy, bg = background_2, bd = 3)
+
+        quit.grid(row=4, column=1)
+
+
+    def start(self, year, gender):
+        with open("output.csv", "a+") as f:
+            text = (year + ", " + gender + "\n")
+            f.write(text)
+            f.close()
+
+
+
 
 root = tk.Tk()
 app = Application(master=root)
