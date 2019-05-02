@@ -35,25 +35,29 @@ class Application(tk.Frame):
         year = tk.StringVar(root)
         year.set(age_years[0])
         popupMenu = tk.OptionMenu(root, year, *age_years)
-        popupMenu.configure(bg=background_2, bd = 3, fg = "white", highlightthickness = 0)
+        popupMenu.configure(bg = background_2, bd = 3, fg = "white", highlightthickness = 0)
         popupMenu.grid(row = 2, column = 0, sticky="w")
 
 
         gender = tk.StringVar(root)
         gender.set(genders[0])
         popupMenu = tk.OptionMenu(root, gender, *genders)
-        popupMenu.configure(bg=background_2, bd = 3, fg = "white", highlightthickness = 0)
+        popupMenu.configure(bg = background_2, bd = 3, fg = "white", highlightthickness = 0)
         popupMenu.grid(row = 3, column = 0, sticky="w")
 
         time = tk.StringVar(root)
-        entry_box = tk.Entry(root)
-        entry_box.bind('<Return>', lambda event: self.start(year.get(),gender.get(), entry_box.get()))
-        entry_box.configure(bg=background_2, fg = "white")
-        entry_box.grid()
+        minute = tk.Entry(root)
+        minute.configure(bg=background_2, fg = "white")
+        minute.grid()
+
+        second = tk.Entry(root)
+        second.bind('<Return>', lambda event: self.record(year.get(), gender.get(), minute.get(), second.get()))
+        second.configure(bg=background_2, fg = "white")
+        second.grid()
 
 
 
-        tk.Button(text="Record Time", command=lambda: self.start(year.get(),gender.get(), entry_box.get()), bg=background_2, bd = 3,fg = "white").grid(row=5,column=5)
+        tk.Button(text="Record Time", command=lambda: self.record(year.get(), gender.get(), minute.get(), second.get()), bg=background_2, bd = 3,fg = "white").grid(row=5,column=5)
 
 
 
@@ -62,11 +66,14 @@ class Application(tk.Frame):
         quit.grid(row=4, column=1)
 
 
-    def start(self, year, gender, time):
-        print(time)
-
+    def record(self, year, gender, minute, second):
+        print(minute, second)
+        print(type(second))
+        if second == "":
+            second = 0
+        #year + ", " + gender + ", " + minute + "." + second + ", " + str(datetime.datetime.now()) +"\n"
         with open("output.csv", "a+") as f:
-            text = (year + ", " + gender + ", " + time + ", " + str(datetime.datetime.now()) +"\n")
+            text = ("%s  %s, %s, %s.%s\n" %(str(datetime.datetime.now()), year, gender, minute, second))
             f.write(text)
             f.close()
 
