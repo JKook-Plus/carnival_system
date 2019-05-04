@@ -15,16 +15,16 @@ def close():
 def create_table():
     global conn, c
     c.execute("""CREATE TABLE IF NOT EXISTS students(
-                Surname text,
-                Name text,
-                Gender text,
-                Year integer,
-                House text,
-                Tutor text,
-                DOB text,
-                ID integer,
-                Time integer
-                )""")
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                surname TEXT,
+                name TEXT,
+                Gender TEXT,
+                year INTEGER,
+                house TEXT,
+                teacher TEXT,
+                dob TEXT,
+                time INTEGER,
+                student_id INTEGER);""")
 
 
 def data_entry():
@@ -44,7 +44,7 @@ def data_entry():
         for i in columns:
             # print(row[i])
             details.append(row[i])
-        c.execute("INSERT INTO students VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (details[0],details[1],details[2],details[3],details[4].capitalize(),details[5],str(details[6]),details[7], None))
+        c.execute("INSERT INTO students VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (details[0],details[1],details[2],details[3],details[4].capitalize(),details[5],str(details[6]),details[7], None))
 
 
     conn.commit()
@@ -58,7 +58,7 @@ def get_info(type, lookup):
     global conn, c
     (c.execute("SELECT * FROM students WHERE %s = ?" %(type),(lookup,)))
     #print(c.fetchall())
-    return(c.fetchall())
+    return c.fetchall()
 
 def get_data_types():
     global conn, c
