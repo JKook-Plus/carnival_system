@@ -63,13 +63,13 @@ class Application(tk.Frame):
         minute = tk.Entry(root)
         minute.configure(bg=background_2, fg = "white")
         tk.Label(root, text="Minute: ", bg = background, fg = "white").grid(row=5,column=0)
-        minute.grid(row=5,column=1)
+        minute.grid(row=5,column=3)
 
         second = tk.Entry(root)
 
         second.configure(bg=background_2, fg = "white")
         tk.Label(root, text="Second: ", bg = background, fg = "white").grid(row=6,column=0)
-        second.grid(row=6,column=1)
+        second.grid(row=6,column=3)
 
         search = tk.StringVar(root)
         search.set(search_options[2])
@@ -88,16 +88,16 @@ class Application(tk.Frame):
 
         listbox = tk.Listbox(root)
         listbox.config(bd=0, bg = background, fg = "white",width = 100, height = 20)
-        #listbox.width(10)
-        for item in (db_interact.get_info(search.get(), gender.get())):
+
+        for item in (db_interact.get_info(search.get(), "M")):
             listbox.insert(tk.END, item)
 
-        #for i in
-        listbox.grid()
-        #scrollbar.config(command=listbox.yview)
-        tk.Button(text="Update Search", command=lambda: self.clear_listbox(listbox), bg=background_2, bd = 3, fg = "white").grid(row=3,column=2)
-        tk.Button(text="Record Time", command=lambda: self.record(year.get(), gender.get(), minute.get(), second.get()), bg=background_2, bd = 3, fg = "white").grid(row=10,column=0)
+        if search.get() ==
 
+        listbox.grid()
+        tk.Button(text="Update Search", command=lambda: self.clear_listbox(listbox), bg=background_2, bd = 3, fg = "white").grid(row=3,column=2)
+        tk.Button(text="Record Time", bg=background_2, bd = 3, fg = "white").grid(row=10,column=0)
+        # command=lambda: self.record(year.get(), gender.get(), minute.get(), second.get())
 
 
         quit = tk.Button(self, text="QUIT", fg="red", command=self.master.destroy, bg = background_2, bd = 3)
@@ -119,6 +119,7 @@ class Application(tk.Frame):
 
     def clear_listbox(self,listbox):
         listbox.delete(0,tk.END)
+
         #listbox.get(listbox.curselection())
 
 
