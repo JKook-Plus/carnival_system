@@ -2,11 +2,14 @@ import tkinter as tk
 import ctypes
 import sqlite3
 import datetime
+import db_interact
+
+
 
 user32 = ctypes.windll.user32
 
 
-age_years = ["2008","2007","2006","2005","2004","2003)"]
+age_years = ["5","6","7","8","9","10)"]
 genders = ["M", "F"]
 
 background = ("#18191c")
@@ -31,6 +34,17 @@ class Application(tk.Frame):
 
     def create_widgets(self):
 
+        db_interact.start()
+        db_interact.create_table()
+        db_interact.data_entry()
+
+        search_options = db_interact.get_data_types()
+        #print(search_options)
+
+
+        root.bind('<Return>', lambda event: self.record(year.get(), gender.get(), minute.get(), second.get()))
+
+
 
         year = tk.StringVar(root)
         year.set(age_years[0])
@@ -48,22 +62,48 @@ class Application(tk.Frame):
         time = tk.StringVar(root)
         minute = tk.Entry(root)
         minute.configure(bg=background_2, fg = "white")
-        minute.grid()
+        tk.Label(root, text="Minute: ", bg = background, fg = "white").grid(row=5,column=0)
+        minute.grid(row=5,column=1)
 
         second = tk.Entry(root)
-        second.bind('<Return>', lambda event: self.record(year.get(), gender.get(), minute.get(), second.get()))
+
         second.configure(bg=background_2, fg = "white")
-        second.grid()
+        tk.Label(root, text="Second: ", bg = background, fg = "white").grid(row=6,column=0)
+        second.grid(row=6,column=1)
+
+        search = tk.StringVar(root)
+        search.set(search_options[2])
+        popupMenu = tk.OptionMenu(root, search, *search_options)
+        popupMenu.configure(bg = background_2, bd = 3, fg = "white", highlightthickness = 0)
+        popupMenu.grid(row = 3, column = 1, sticky="w")
 
 
 
-        tk.Button(text="Record Time", command=lambda: self.record(year.get(), gender.get(), minute.get(), second.get()), bg=background_2, bd = 3,fg = "white").grid(row=5,column=5)
+        #listbox.insert(tk.END, "")
+
+
+        #(db_interact.get_info())
+        #info = db_interact.get_info()
+        #print((db_interact.get_info(search.get(), gender.get())))
+
+        listbox = tk.Listbox(root)
+        listbox.config(bd=0, bg = background, fg = "white",width = 100, height = 20)
+        #listbox.width(10)
+        for item in (db_interact.get_info(search.get(), gender.get())):
+            listbox.insert(tk.END, item)
+
+        #for i in
+        listbox.grid()
+        #scrollbar.config(command=listbox.yview)
+        tk.Button(text="Update Search", command=lambda: self.clear_listbox(listbox), bg=background_2, bd = 3, fg = "white").grid(row=3,column=2)
+        tk.Button(text="Record Time", command=lambda: self.record(year.get(), gender.get(), minute.get(), second.get()), bg=background_2, bd = 3, fg = "white").grid(row=10,column=0)
 
 
 
         quit = tk.Button(self, text="QUIT", fg="red", command=self.master.destroy, bg = background_2, bd = 3)
+        quit.grid(row=10, column=10)
 
-        quit.grid(row=4, column=1)
+        db_interact.close()
 
 
     def record(self, year, gender, minute, second):
@@ -76,6 +116,12 @@ class Application(tk.Frame):
             text = ("%s  %s, %s, %s.%s\n" %(str(datetime.datetime.now()), year, gender, minute, second))
             f.write(text)
             f.close()
+
+    def clear_listbox(self,listbox):
+        listbox.delete(0,tk.END)
+        #listbox.get(listbox.curselection())
+
+
 
 
 
