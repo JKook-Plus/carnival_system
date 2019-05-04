@@ -6,7 +6,7 @@ import datetime
 user32 = ctypes.windll.user32
 
 
-age_years = ["5 (2008)","6 (2007)","7 (2006)","8 (2005)","9 (2004)","10 (2003)"]
+age_years = ["2008","2007","2006","2005","2004","2003)"]
 genders = ["M", "F"]
 
 background = ("#18191c")
