@@ -150,6 +150,7 @@ class Application(Frame):
         print("====================")
         print(options[val])
 
+        
         #self.search_opt_box.configure(optsthing=options[val])
 
 
