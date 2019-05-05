@@ -97,7 +97,7 @@ class Application(Frame):
         search_opts.set(search_options[3])
         self.search_opt_box = OptionMenu(root, search_opts, *search_opts_crap)
         self.search_opt_box.configure(bg = background_2, bd = 3, fg = "white", highlightthickness = 0)
-        self.search_opt_box.grid(row = 3, column = 1, sticky="w")
+        self.search_opt_box.grid(row = 4, column = 1, sticky="w")
         #listbox.insert(END, "")
 
 
@@ -150,7 +150,7 @@ class Application(Frame):
         print("====================")
         print(options[val])
 
-        # self.search_opt_box.
+        #self.search_opt_box.configure(optsthing=options[val])
 
 
 
