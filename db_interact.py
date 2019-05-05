@@ -18,7 +18,7 @@ def create_table():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 surname TEXT,
                 name TEXT,
-                Gender TEXT,
+                gender TEXT,
                 year INTEGER,
                 house TEXT,
                 teacher TEXT,

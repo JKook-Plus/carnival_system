@@ -11,6 +11,9 @@ user32 = ctypes.windll.user32
 
 age_years = ["5","6","7","8","9","10)"]
 genders = ["M", "F"]
+houses = ["Water", "Fire", "Air", "Earth"]
+
+options = {"gender" : genders, "year" : age_years, "house": houses}
 
 background = "#18191c"
 background_2 = "#36393f"
@@ -37,6 +40,7 @@ class Application(Frame):
         db_interact.data_entry()
 
         search_options = db_interact.get_data_types()
+        search_opts_crap = []
         #print(search_options)
 
 
@@ -69,13 +73,8 @@ class Application(Frame):
         Label(root, text="Second: ", bg = background, fg = "white").grid(row=6,column=0)
         second.grid(row=6,column=3)
 
-        search_opts = StringVar(root)
-        search_opts.set(search_options[3])
-        search_opt_box = OptionMenu(root, search_opts, *search_opts_crap)
-        search_opt_box.configure(bg = background_2, bd = 3, fg = "white", highlightthickness = 0)
-        search_opt_box.grid(row = 3, column = 1, sticky="w")
 
-        search_opt_box.bind("<Button-1>", lambda: search_opt_box == optinas for collums if search == gener, search_opts_crap=["M", "F"])
+
 
 
 
@@ -84,10 +83,23 @@ class Application(Frame):
         popupMenu = OptionMenu(root, search, *search_options)
         popupMenu.configure(bg = background_2, bd = 3, fg = "white", highlightthickness = 0)
         popupMenu.grid(row = 3, column = 1, sticky="w")
+        search.trace("w", lambda *args: self.testing(search.get()))
 
 
+        #options = search_options[3]
+        #print[x for x in options[search.get()]]
 
+        for i in options[search.get()]:
+            search_opts_crap.append(i)
+
+
+        search_opts = StringVar(root)
+        search_opts.set(search_options[3])
+        self.search_opt_box = OptionMenu(root, search_opts, *search_opts_crap)
+        self.search_opt_box.configure(bg = background_2, bd = 3, fg = "white", highlightthickness = 0)
+        self.search_opt_box.grid(row = 3, column = 1, sticky="w")
         #listbox.insert(END, "")
+
 
 
         #(db_interact.get_info())
@@ -107,7 +119,7 @@ class Application(Frame):
         listbox.grid()
         Button(text="Update Search", command=lambda: self.clear_listbox(listbox), bg=background_2, bd = 3, fg = "white").grid(row=3,column=2)
         Button(text="Record Time", command = lambda: self.record(year.get(),gender.get(),minute.get(),second.get()), bg=background_2, bd = 3, fg = "white").grid(row=10,column=0)
-        # command=lambda: self.record(year.get(), gender.get(), minute.get(), second.get())
+        #command=lambda: self.record(year.get(), gender.get(), minute.get(), second.get())
 
 
         quit = Button(self, text="QUIT", fg="red", command=lambda: exit(), bg = background_2, bd = 3)
@@ -129,8 +141,16 @@ class Application(Frame):
     def clear_listbox(self,listbox):
         listbox.delete(0,END)
 
-        #listbox.get(listbox.curselection())
+    def populate(search_column, ):
 
+        for item in (db_interact.get_info(search_column, )):
+            listbox.insert(END, item)
+#listbox.get(listbox.curselection())
+    def testing(self, val):
+        print("====================")
+        print(options[val])
+
+        # self.search_opt_box.
 
 
 
